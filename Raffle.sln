@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle", "Raffle\Raffle.csproj", "{9950B554-2747-4E0C-97A6-DA56403678EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{DCB11E13-E110-46EC-95A6-B16CC007FB25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{9D461A1A-73D0-447D-8966-A80E98C92246}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "Context\Context.csproj", "{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9950B554-2747-4E0C-97A6-DA56403678EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9950B554-2747-4E0C-97A6-DA56403678EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9950B554-2747-4E0C-97A6-DA56403678EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9950B554-2747-4E0C-97A6-DA56403678EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D461A1A-73D0-447D-8966-A80E98C92246}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D461A1A-73D0-447D-8966-A80E98C92246}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D461A1A-73D0-447D-8966-A80E98C92246}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D461A1A-73D0-447D-8966-A80E98C92246}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9D461A1A-73D0-447D-8966-A80E98C92246} = {DCB11E13-E110-46EC-95A6-B16CC007FB25}
+		{9FB93C0B-DC7B-4DEC-877B-E1B82DE7E092} = {DCB11E13-E110-46EC-95A6-B16CC007FB25}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B070455-811A-41D4-A858-F282E84F5692}
+	EndGlobalSection
+EndGlobal

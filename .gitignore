@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs
+/Context/bin/Debug
+/Context/obj/Debug
+/Models/bin/Debug
+/Models/obj/Debug
+/Raffle/bin
+/Raffle/obj/Debug
