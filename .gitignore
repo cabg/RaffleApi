@@ -3,3 +3,10 @@
 ################################################################################
 
 /BusinessAccess/bin/Debug/netcoreapp2.0
+/BusinessAccess/obj
+/Context/bin/Debug/netcoreapp2.0
+/Context/obj
+/Models/bin/Debug/netcoreapp2.0
+/Models/obj
+/RaffleApi/bin/Debug/netcoreapp2.0
+/RaffleApi/obj

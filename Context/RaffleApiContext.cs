@@ -1,11 +1,14 @@
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System.Data.Entity;
 
 namespace Context
 {
     public class RaffleApiContext : DbContext
     {
-        public RaffleApiContext() : base("DefaultConnection") { }
+        public RaffleApiContext(DbContextOptions<RaffleApiContext> options)
+           : base(options)
+        {
+        }
 
         public DbSet<User> Users { get; set; }
 
