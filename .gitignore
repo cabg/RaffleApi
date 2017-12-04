@@ -3,3 +3,9 @@
 ################################################################################
 
 /Raffle/obj/Debug
+/Raffle/bin
+/Models/bin/Debug
+/Models/obj/Debug
+/Context/bin/Debug
+/Context/obj/Debug
+/packages
