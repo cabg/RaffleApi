@@ -12,9 +12,10 @@ using System;
 namespace Context.Migrations
 {
     [DbContext(typeof(RaffleApiContext))]
-    partial class RaffleApiContextModelSnapshot : ModelSnapshot
+    [Migration("20171204221925_RaffleCounter")]
+    partial class RaffleCounter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

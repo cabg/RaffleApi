@@ -15,5 +15,7 @@ namespace Context
         public DbSet<Raffle> Raffles { get; set; }
 
         public DbSet<Prize> Prizes { get; set; }
+
+        public DbSet<RaffleCounter> RaffleCounter { get; set; }
     }
 }
