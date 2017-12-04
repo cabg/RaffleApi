@@ -15,6 +15,8 @@ namespace BusinessAccess.Interfaces
         
         RaffleApiContext Context { get; set; }
 
+        Task<int> GetRaffleCounter(int id);
+        Task<List<int>> GetRaffleParticipant(int id);
         //Task<List<Raffle>> GetAllAsync();
 
         //Task<User> FindByIdAsync(int id);

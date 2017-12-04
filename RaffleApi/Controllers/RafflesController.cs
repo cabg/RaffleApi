@@ -26,6 +26,8 @@ namespace RaffleApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRadom()
         {
+            var counter = await Repository.GetRaffleCounter(1);
+
             var exclude = new HashSet<int>() { };
             var range = Enumerable.Range(1, 100).Where(i => !exclude.Contains(i));
 

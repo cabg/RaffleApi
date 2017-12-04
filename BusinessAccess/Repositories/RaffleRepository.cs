@@ -19,12 +19,23 @@ namespace BusinessAccess.Repositories
 
         }
 
+        public async Task<int> GetRaffleCounter(int id)
+        {
+            var counter = Context.RaffleCounter.FirstOrDefault(c => c.Id == id);
+            return counter.Counter;
+        }
+
+        public Task<List<int>> GetRaffleParticipant(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         //public async Task<List<User>> GetAllAsync()
         //{
         //    return await Context.Users.ToListAsync();
         //}
 
-        
+
         //public async Task<User> AddOrUpdateAsync(User user)
         //{
         //    InsertOrUpdate(user);
@@ -32,7 +43,7 @@ namespace BusinessAccess.Repositories
 
         //    return user;
         //}
-        
+
         //public async Task DeleteAsync(int id)
         //{
         //    var model = await Context.Users.FirstOrDefaultAsync(u => u.Id == id);
