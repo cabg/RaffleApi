@@ -2,10 +2,4 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Raffle/obj/Debug
-/Raffle/bin
-/Models/bin/Debug
-/Models/obj/Debug
-/Context/bin/Debug
-/Context/obj/Debug
-/packages
+/BusinessAccess/bin/Debug/netcoreapp2.0
