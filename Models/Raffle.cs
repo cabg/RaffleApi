@@ -10,7 +10,7 @@ namespace Models
 
         public int Cicle { get; set;}
 
-        public User User { get; set; }
+        public int UserId { get; set; }
 
         public RaffleStatus Status { get; set; }
 

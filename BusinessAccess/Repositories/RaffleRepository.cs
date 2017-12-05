@@ -25,9 +25,9 @@ namespace BusinessAccess.Repositories
             return counter.Counter;
         }
 
-        public Task<List<int>> GetRaffleParticipant(int id)
+        public async Task<List<int>> GetRaffleParticipant(int id)
         {
-            throw new NotImplementedException();
+            return await Context.Raffles.Where(r => r.RaffleCounter == id && r.Status == 0).Select(rp => rp.UserId).ToListAsync();
         }
 
         //public async Task<List<User>> GetAllAsync()
