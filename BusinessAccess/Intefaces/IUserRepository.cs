@@ -27,6 +27,5 @@ namespace BusinessAccess.Interfaces
 
         Task SaveAsync();
 
-
     }
 }

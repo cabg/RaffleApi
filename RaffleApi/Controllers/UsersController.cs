@@ -34,13 +34,12 @@ namespace RaffleApi.Controllers
         }
 
         // GET api/users/save
-        [HttpPost("save")]
+        [HttpGet("save")]
         public async Task<IActionResult> SaveParticipants(int first, int last)
-        {
-           
+        {           
             var userData = await Repository.SaveParticipants(first, last);
 
             return Ok(userData);
-        }
+        }  
     }
 }

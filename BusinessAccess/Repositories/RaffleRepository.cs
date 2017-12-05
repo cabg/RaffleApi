@@ -14,6 +14,8 @@ namespace BusinessAccess.Repositories
     {
         public RaffleApiContext Context { get; set; }
 
+        private readonly int RaffleCounterId = 1;
+
         public RaffleRepository()
         {
 
@@ -23,40 +25,54 @@ namespace BusinessAccess.Repositories
             return await Context.Raffles.Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
         }
 
-        public async Task<RaffleCounter> GetRaffleCounter(int id)
+        public async Task<Raffle> GetRandom(int PrizeId)
         {
-            return Context.RaffleCounter.FirstOrDefault(c => c.Id == id);
+            var prizeDetail = Context.Prizes.FirstOrDefault(p => p.Id == PrizeId);
+
+            var raffleCounter = Context.RaffleCounter.FirstOrDefault(c => c.Id == RaffleCounterId);
+
+            var exclude = Context.Raffles.Where(r => r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner).Select(rp => rp.UserId).ToHashSet();
+            var participantsRange = Context.Users.FirstOrDefault();
+            var rangeRandom = Enumerable.Range(participantsRange.First, participantsRange.Last).Where(i => !exclude.Contains(i));
+
+            var rand = new System.Random();
+            int index = rand.Next(0, participantsRange.Last - exclude.Count);
+
+            var raffle = new Raffle
+            {
+                Prize = prizeDetail,
+                Cicle = raffleCounter.Cicle,
+                UserId = rangeRandom.ElementAt(index),
+                RaffleCounter = raffleCounter.Counter,
+                Status = RaffleStatus.NonWinner
+            };
+            var raffledetail = await AddOrUpdateAsync(raffle);
+
+            raffleCounter.Cicle = raffleCounter.Cicle + 1;
+            UpdateCounter(raffleCounter);
+
+            return raffledetail;
         }
 
-        public async Task<HashSet<int>> GetRaffleParticipant(int id)
+        public async Task<Raffle> GivePrize(int RaffleId)
         {
-            return Context.Raffles.Where(r => r.RaffleCounter == id && r.Status == RaffleStatus.NonWinner).Select(rp => rp.UserId).ToHashSet();
-        }
+            var raffleData = await FindByIdAsync(RaffleId);
+            
+            var prizeDetail = Context.Prizes.FirstOrDefault(p => p.Id == raffleData.Prize.Id);
+            
+            var raffleCounter = Context.RaffleCounter.FirstOrDefault(c => c.Id == RaffleCounterId);
 
-        public async Task<User> GetParticipantRange()
-        {
-            return Context.Users.FirstOrDefault();
-        }
+            raffleData.Status = RaffleStatus.Winner;
+            var raffleDetail = await AddOrUpdateAsync(raffleData);
 
-        public async Task<Prize> GetPrize(int id)
-        {
-            return Context.Prizes.FirstOrDefault(p => p.Id == id);
-        }
+            prizeDetail.Stock = prizeDetail.Stock - 1;
+            DiscountStock(prizeDetail);
 
-        public async Task<RaffleCounter> UpdateCounter(RaffleCounter rcounter)
-        {
-            Context.Entry(rcounter).State = EntityState.Modified;
-            Context.SaveChangesAsync();
+            raffleCounter.Counter = raffleCounter.Counter + 1;
+            raffleCounter.Cicle = 1;
+            UpdateCounter(raffleCounter);
 
-            return rcounter;
-        }
-
-        public async Task<Prize> DiscountStock(Prize prize)
-        {
-            Context.Entry(prize).State = EntityState.Modified;
-            Context.SaveChangesAsync();
-
-            return prize;
+            return raffleDetail;
         }
 
         public async Task<Raffle> AddOrUpdateAsync(Raffle raffle)
@@ -78,12 +94,47 @@ namespace BusinessAccess.Repositories
 
         public async Task<Raffle> FindByIdAsync(int id)
         {
-            return await Context.Raffles.FindAsync(id);
+            return await Context.Raffles.Include("Prize").FirstOrDefaultAsync(u => u.Id == id);
         }
 
         private void InsertOrUpdate(Raffle raffle)
         {
-            Context.Entry(raffle).State = EntityState.Modified;
+            if (raffle.Id != 0)
+            {
+                Context.Entry(raffle).State = EntityState.Modified;
+            }
+            else
+            {
+                Context.Set<Raffle>().Add(raffle);
+            }            
+        }
+
+        private void UpdateCounter(RaffleCounter raffleCounter)
+        {
+            if (raffleCounter.Id != 0)
+            {
+                Context.Entry(raffleCounter).State = EntityState.Modified;
+                
+            }
+            else
+            {
+                Context.Set<RaffleCounter>().Add(raffleCounter);
+            }
+            Context.SaveChangesAsync();
+        }
+
+        public void DiscountStock(Prize prize)
+        {
+            if (prize.Id != 0)
+            {
+                Context.Entry(prize).State = EntityState.Modified;
+
+            }
+            else
+            {
+                Context.Set<Prize>().Add(prize);
+            }
+            Context.SaveChangesAsync();
         }
 
         public Task SaveAsync()
