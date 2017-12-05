@@ -18,54 +18,77 @@ namespace BusinessAccess.Repositories
         {
 
         }
-
-        public async Task<int> GetRaffleCounter(int id)
+        public async Task<List<Raffle>> GetWinnersAsync()
         {
-            var counter = Context.RaffleCounter.FirstOrDefault(c => c.Id == id);
-            return counter.Counter;
+            return await Context.Raffles.Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
         }
 
-        public async Task<List<int>> GetRaffleParticipant(int id)
+        public async Task<RaffleCounter> GetRaffleCounter(int id)
         {
-            return await Context.Raffles.Where(r => r.RaffleCounter == id && r.Status == 0).Select(rp => rp.UserId).ToListAsync();
+            return Context.RaffleCounter.FirstOrDefault(c => c.Id == id);
         }
 
-        //public async Task<List<User>> GetAllAsync()
-        //{
-        //    return await Context.Users.ToListAsync();
-        //}
+        public async Task<HashSet<int>> GetRaffleParticipant(int id)
+        {
+            return Context.Raffles.Where(r => r.RaffleCounter == id && r.Status == RaffleStatus.NonWinner).Select(rp => rp.UserId).ToHashSet();
+        }
 
+        public async Task<User> GetParticipantRange()
+        {
+            return Context.Users.FirstOrDefault();
+        }
 
-        //public async Task<User> AddOrUpdateAsync(User user)
-        //{
-        //    InsertOrUpdate(user);
-        //    await SaveAsync();
+        public async Task<Prize> GetPrize(int id)
+        {
+            return Context.Prizes.FirstOrDefault(p => p.Id == id);
+        }
 
-        //    return user;
-        //}
+        public async Task<RaffleCounter> UpdateCounter(RaffleCounter rcounter)
+        {
+            Context.Entry(rcounter).State = EntityState.Modified;
+            Context.SaveChangesAsync();
 
-        //public async Task DeleteAsync(int id)
-        //{
-        //    var model = await Context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return rcounter;
+        }
 
-        //    Context.Entry(model).State = EntityState.Deleted;
+        public async Task<Prize> DiscountStock(Prize prize)
+        {
+            Context.Entry(prize).State = EntityState.Modified;
+            Context.SaveChangesAsync();
 
-        //    await Context.SaveChangesAsync();
-        //}
+            return prize;
+        }
 
-        //public async Task<User> FindByIdAsync(int id)
-        //{
-        //    return await Context.Users.FindAsync(id);
-        //}
+        public async Task<Raffle> AddOrUpdateAsync(Raffle raffle)
+        {
+            InsertOrUpdate(raffle);
+            await SaveAsync();
 
-        //private void InsertOrUpdate(User user)
-        //{
-        //    Context.Entry(user).State = EntityState.Modified;
-        //}
+            return raffle;
+        }
 
-        //public Task SaveAsync()
-        //{
-        //    return Context.SaveChangesAsync();
-        //}
+        public async Task DeleteAsync(int id)
+        {
+            var model = await Context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            Context.Entry(model).State = EntityState.Deleted;
+
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task<Raffle> FindByIdAsync(int id)
+        {
+            return await Context.Raffles.FindAsync(id);
+        }
+
+        private void InsertOrUpdate(Raffle raffle)
+        {
+            Context.Entry(raffle).State = EntityState.Modified;
+        }
+
+        public Task SaveAsync()
+        {
+            return Context.SaveChangesAsync();
+        }
     }
 }

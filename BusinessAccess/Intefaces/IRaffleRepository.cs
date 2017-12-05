@@ -15,18 +15,27 @@ namespace BusinessAccess.Interfaces
         
         RaffleApiContext Context { get; set; }
 
-        Task<int> GetRaffleCounter(int id);
+        Task<List<Raffle>> GetWinnersAsync();
 
-        Task<List<int>> GetRaffleParticipant(int id);
-        //Task<List<Raffle>> GetAllAsync();
+        Task<RaffleCounter> GetRaffleCounter(int id);
 
-        //Task<User> FindByIdAsync(int id);
+        Task<HashSet<int>> GetRaffleParticipant(int id);
 
-        //Task<User> AddOrUpdateAsync(User user);
+        Task<User> GetParticipantRange();
 
-        //Task DeleteAsync(int id);
+        Task<Prize> GetPrize(int id);
 
-        //Task SaveAsync();
+        Task<RaffleCounter> UpdateCounter(RaffleCounter rconter);
+
+        Task<Prize> DiscountStock(Prize prize);
+
+        Task<Raffle> FindByIdAsync(int id);
+
+        Task<Raffle> AddOrUpdateAsync(Raffle user);
+
+        Task DeleteAsync(int id);
+
+        Task SaveAsync();
 
 
     }
