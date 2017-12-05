@@ -26,7 +26,7 @@ namespace RaffleApi.Controllers
         }
 
         // GET api/raffles/getRandom/2
-        [HttpGet("getRandom/{1}")]
+        [HttpGet("getRandom/{PrizeId}")]
         public async Task<IActionResult> GetRadom(int PrizeId)
         {
             var prize = await Repository.GetPrize(PrizeId);
@@ -62,7 +62,7 @@ namespace RaffleApi.Controllers
         }
 
         // GET api/raffles/getRandom/5
-        [HttpGet("givePrize/{1}")]
+        [HttpGet("givePrize/{RaffleId}")]
         public async Task<IActionResult> GivePrize(int RaffleId)
         {
             var raffleData = await Repository.FindByIdAsync(RaffleId);

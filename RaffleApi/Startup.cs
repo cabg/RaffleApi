@@ -38,6 +38,7 @@ namespace drawApi
             // Implement Repositories
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IRaffleRepository, RaffleRepository>();
+            services.AddSingleton<IPrizeRepository, PrizeRepository>();
 
         }
 

@@ -11,3 +11,7 @@
 /RaffleApi/bin/Debug/netcoreapp2.0
 /RaffleApi/obj
 /.vs
+/RaffleApi/bin/Release/netcoreapp2.0
+/Models/bin/Release/netcoreapp2.0
+/Context/bin/Release/netcoreapp2.0
+/BusinessAccess/bin/Release/netcoreapp2.0

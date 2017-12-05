@@ -23,7 +23,32 @@ namespace BusinessAccess.Repositories
         {
             return await Context.Users.ToListAsync();
         }
-        
+
+        public async Task<User> SaveParticipants(int first, int last)
+        {
+            var userData = Context.Users.FirstOrDefault();
+            if (userData != null)
+            {
+                userData.First = first;
+                userData.Last = last;
+
+                await AddOrUpdateAsync(userData);
+            }
+            else
+            {
+                var newUser = new User
+                {
+                    First = first,
+                    Last = last
+                };
+
+                await AddOrUpdateAsync(newUser);
+                userData = newUser;
+            }
+
+            return userData;
+        }
+
         public async Task<User> AddOrUpdateAsync(User user)
         {
             InsertOrUpdate(user);
@@ -48,7 +73,14 @@ namespace BusinessAccess.Repositories
 
         private void InsertOrUpdate(User user)
         {
-            Context.Entry(user).State = EntityState.Modified;
+            if (user.Id != 0)
+            {
+                Context.Entry(user).State = EntityState.Modified;
+            }
+            else
+            {
+                Context.Set<User>().Add(user);
+            }                            
         }
 
         public Task SaveAsync()

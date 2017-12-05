@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BusinessAccess.Interfaces;
 using Context;
+using Models;
 
 namespace RaffleApi.Controllers
 {
@@ -30,6 +31,16 @@ namespace RaffleApi.Controllers
             if (!users.Any()) NotFound();
 
             return Ok(users);
+        }
+
+        // GET api/users/save
+        [HttpPost("save")]
+        public async Task<IActionResult> SaveParticipants(int first, int last)
+        {
+           
+            var userData = await Repository.SaveParticipants(first, last);
+
+            return Ok(userData);
         }
     }
 }

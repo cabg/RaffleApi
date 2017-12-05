@@ -10,18 +10,16 @@ using System.Threading.Tasks;
 
 namespace BusinessAccess.Interfaces
 {
-    public interface IUserRepository
+    public interface IPrizeRepository
     {
         
         RaffleApiContext Context { get; set; }
 
-        Task<List<User>> GetAllAsync();
+        Task<List<Prize>> GetAllAsync();
 
-        Task<User> FindByIdAsync(int id);
+        Task<Prize> FindByIdAsync(int id);
 
-        Task<User> SaveParticipants(int first, int last);
-
-        Task<User> AddOrUpdateAsync(User user);
+        Task<Prize> AddOrUpdateAsync(Prize prize);
 
         Task DeleteAsync(int id);
 
