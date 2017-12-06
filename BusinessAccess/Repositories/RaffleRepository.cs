@@ -46,12 +46,16 @@ namespace BusinessAccess.Repositories
                 RaffleCounter = raffleCounter.Counter,
                 Status = RaffleStatus.NonWinner
             };
-            var raffledetail = await AddOrUpdateAsync(raffle);
+
+            InsertOrUpdate(raffle);
 
             raffleCounter.Cicle = raffleCounter.Cicle + 1;
             UpdateCounter(raffleCounter);
 
-            return raffledetail;
+            await SaveAsync();
+
+
+            return raffle;
         }
 
         public async Task<Raffle> GivePrize(int RaffleId)
@@ -63,7 +67,7 @@ namespace BusinessAccess.Repositories
             var raffleCounter = Context.RaffleCounter.FirstOrDefault(c => c.Id == RaffleCounterId);
 
             raffleData.Status = RaffleStatus.Winner;
-            var raffleDetail = await AddOrUpdateAsync(raffleData);
+            InsertOrUpdate(raffleData);
 
             prizeDetail.Stock = prizeDetail.Stock - 1;
             DiscountStock(prizeDetail);
@@ -72,7 +76,9 @@ namespace BusinessAccess.Repositories
             raffleCounter.Cicle = 1;
             UpdateCounter(raffleCounter);
 
-            return raffleDetail;
+            await SaveAsync();
+
+            return raffleData;
         }
 
         public async Task<Raffle> AddOrUpdateAsync(Raffle raffle)
@@ -120,7 +126,7 @@ namespace BusinessAccess.Repositories
             {
                 Context.Set<RaffleCounter>().Add(raffleCounter);
             }
-            Context.SaveChangesAsync();
+           
         }
 
         public void DiscountStock(Prize prize)
@@ -134,7 +140,6 @@ namespace BusinessAccess.Repositories
             {
                 Context.Set<Prize>().Add(prize);
             }
-            Context.SaveChangesAsync();
         }
 
         public Task SaveAsync()

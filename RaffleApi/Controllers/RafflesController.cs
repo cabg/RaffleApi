@@ -27,27 +27,21 @@ namespace RaffleApi.Controllers
         [HttpGet("getrandom/{PrizeId}")]
         public async Task<IActionResult> GetRadom(int PrizeId)
         {
-            var raffleDetail = await Repository.GetRandom(PrizeId);
-
-            return Ok(raffleDetail);
+            return Ok(await Repository.GetRandom(PrizeId));
         }
 
         // GET api/raffles/getRandom/5
         [HttpGet("giveprize/{RaffleId}")]
         public async Task<IActionResult> GivePrize(int RaffleId)
         {
-            var raffleDetail = await Repository.GivePrize(RaffleId);
-
-            return Ok(raffleDetail);
+            return Ok(await Repository.GivePrize(RaffleId));
         }
 
         // GET api/raffles/winners
         [HttpGet("winners")]
         public async Task<IActionResult> GetWinners()
         {
-            var winners = await Repository.GetWinnersAsync();
-
-            return Ok(winners);
+            return Ok(await Repository.GetWinnersAsync(););
         }
     }
 }
