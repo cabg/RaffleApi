@@ -41,7 +41,7 @@ namespace RaffleApi.Controllers
         [HttpGet("winners")]
         public async Task<IActionResult> GetWinners()
         {
-            return Ok(await Repository.GetWinnersAsync(););
+            return Ok(await Repository.GetWinnersAsync());
         }
     }
 }
