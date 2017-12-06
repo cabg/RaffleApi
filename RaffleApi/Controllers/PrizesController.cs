@@ -40,5 +40,36 @@ namespace RaffleApi.Controllers
             return Ok("ok");
         }
 
+
+        [HttpGet("update")]
+        public async Task<IActionResult> UpdatePrize(int id,String Name, int Stock, int Status)
+        {
+            var prizeData = await Repository.UpdatePrize(id,Name, Stock,Status);
+
+            return Ok("ok");
+        }
+
+        [HttpGet("delete")]
+        public async Task<IActionResult> DeletePrize(int id)
+        {
+            var prizeData = await Repository.DeletePrize(id);
+
+            return Ok("ok");
+        }
+
+        [HttpGet("getprize")]
+        public async Task<IActionResult> GetPrize(int id)
+        {
+            var prizeData = await Repository.GetPrize(id);
+
+            //if (!prizeData.Any()) NotFound();
+
+            return Ok(prizeData);
+
+           
+        }
+
+        
+
     }
 }

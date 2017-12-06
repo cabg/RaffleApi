@@ -61,34 +61,63 @@ namespace BusinessAccess.Repositories
 
         public async Task<Prize> SavePrize(String Name, int Stock)
         {
-            var newUser = new Prize
-            {
-                Name = Name,
-                Stock = Stock,
-                Status = PrizeStatus.Active
-            };
-
-            await AddOrUpdateAsync(newUser);
-
+                var newUser = new Prize
+                {
+                    Name = Name,
+                    Stock = Stock,
+                    Status = PrizeStatus.Active
+                };
+                if (Name != null && Stock >= 0)
+                {
+                    await AddOrUpdateAsync(newUser);
+                
+                }
             return newUser;
         }
 
-        public async Task<Prize> UpdateAsync(int id, String Name, int Stock)
+        public async Task<Prize> UpdatePrize(int id, String Name, int Stock, int Status)
         {
-            var preziData = Context.Prizes.FirstOrDefault();
+
+            var preziData = Context.Prizes.FirstOrDefault(p => p.Id == id);
+            if (id>=0 && Name != null &&  Stock >=0 && (Status==0 || Status == 1) ) { 
+           // var preziData = await Context.Prizes.FirstOrDefaultAsync(p => p.Id == id);
+           
             if (preziData != null)
             {
                 preziData.Name = Name;
                 preziData.Stock = Stock;
+                preziData.Status = (Status == 1)? PrizeStatus.Active:PrizeStatus.Inactive;
 
                 await AddOrUpdateAsync(preziData);
+            }
             }
             return preziData;
         }
 
+        public async Task<Prize> DeletePrize(int id)
+        {
+            var model = await Context.Prizes.FirstOrDefaultAsync(p => p.Id == id);
+
+            Context.Entry(model).State = EntityState.Deleted;
+
+            await Context.SaveChangesAsync();
+            return model;
+        }
+
+        public async Task<Prize>  GetPrize(int id)
+        {
+
+           
+            var model = await Context.Prizes.FirstOrDefaultAsync(p => p.Id == id);
+            return model;
+        }
+
+
         public Task SaveAsync()
         {
             return Context.SaveChangesAsync();
-        }        
+        }   
+        
+
     }
 }

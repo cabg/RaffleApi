@@ -17,13 +17,13 @@ namespace BusinessAccess.Interfaces
 
         Task<List<Prize>> GetAllAsync();
 
-        Task<Prize> FindByIdAsync(int id);
+        Task<Prize> GetPrize(int id);
 
         Task<Prize> AddOrUpdateAsync(Prize prize);
 
-        Task<Prize> UpdateAsync(int id,String Name, int Stock);
+        Task<Prize> UpdatePrize(int id,String Name, int Stock, int Status);
 
-        Task DeleteAsync(int id);
+        Task<Prize> DeletePrize(int id);
 
         Task SaveAsync();
 
