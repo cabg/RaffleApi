@@ -14,7 +14,7 @@ using BusinessAccess.Interfaces;
 using BusinessAccess.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace drawApi
+namespace RaffleApi
 {
     public class Startup
     {
@@ -36,6 +36,7 @@ namespace drawApi
                     options.SerializerSettings.ReferenceLoopHandling =
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+
             // Implement Repositories
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IRaffleRepository, RaffleRepository>();
