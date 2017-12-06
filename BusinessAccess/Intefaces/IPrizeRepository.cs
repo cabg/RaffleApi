@@ -21,9 +21,13 @@ namespace BusinessAccess.Interfaces
 
         Task<Prize> AddOrUpdateAsync(Prize prize);
 
+        Task<Prize> UpdateAsync(int id,String Name, int Stock);
+
         Task DeleteAsync(int id);
 
         Task SaveAsync();
+
+        Task<Prize> SavePrize(String Name, int Stock);
 
 
     }

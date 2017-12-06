@@ -9,4 +9,10 @@ namespace Models
         NonWinner = 0,
         Winner = 1,
     }
+
+    public enum PrizeStatus
+    {
+        Inactive = 0,
+        Active = 1,
+    }
 }

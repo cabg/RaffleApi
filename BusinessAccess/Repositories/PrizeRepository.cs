@@ -21,7 +21,8 @@ namespace BusinessAccess.Repositories
 
         public async Task<List<Prize>> GetAllAsync()
         {
-            return await Context.Prizes.ToListAsync();
+            return await Context.Prizes.Where(p => p.Status == PrizeStatus.Active && p.Stock > 0).ToListAsync();
+
         }
         
         public async Task<Prize> AddOrUpdateAsync(Prize prize)
@@ -48,7 +49,41 @@ namespace BusinessAccess.Repositories
 
         private void InsertOrUpdate(Prize prize)
         {
-            Context.Entry(prize).State = EntityState.Modified;
+            if (prize.Id != 0)
+            {
+                Context.Entry(prize).State = EntityState.Modified;
+            }
+            else
+            {
+                Context.Set<Prize>().Add(prize);
+            }
+        }
+
+        public async Task<Prize> SavePrize(String Name, int Stock)
+        {
+            var newUser = new Prize
+            {
+                Name = Name,
+                Stock = Stock,
+                Status = PrizeStatus.Active
+            };
+
+            await AddOrUpdateAsync(newUser);
+
+            return newUser;
+        }
+
+        public async Task<Prize> UpdateAsync(int id, String Name, int Stock)
+        {
+            var preziData = Context.Prizes.FirstOrDefault();
+            if (preziData != null)
+            {
+                preziData.Name = Name;
+                preziData.Stock = Stock;
+
+                await AddOrUpdateAsync(preziData);
+            }
+            return preziData;
         }
 
         public Task SaveAsync()
