@@ -22,7 +22,7 @@ namespace BusinessAccess.Repositories
         }
         public async Task<List<Raffle>> GetWinnersAsync()
         {
-            return await Context.Raffles.Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
+            return await Context.Raffles.Include("Prize").Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
         }
 
         public async Task<Raffle> GetRandom(int PrizeId)
