@@ -27,7 +27,9 @@ namespace RaffleApi.Controllers
         [HttpGet("getrandom/{PrizeId}")]
         public async Task<IActionResult> GetRadom(int PrizeId)
         {
-            return Ok(await Repository.GetRandom(PrizeId));
+            var raffle = await Repository.GetRandom(PrizeId);
+            if (raffle.Id !=0) NotFound();
+            return Ok(raffle);
         }
 
         // GET api/raffles/getRandom/5
