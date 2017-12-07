@@ -20,18 +20,19 @@ namespace BusinessAccess.Repositories
         {
 
         }
+
         public async Task<List<Raffle>> GetWinnersAsync()
         {
             return await Context.Raffles.Include("Prize").Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
         }
-
+        
         public async Task<Raffle> GetRandom(int PrizeId)
         {
             var prizeDetail = Context.Prizes.FirstOrDefault(p => p.Id == PrizeId);
 
             var raffleCounter = Context.RaffleCounter.FirstOrDefault(c => c.Id == RaffleCounterId);
 
-            var exclude = Context.Raffles.Where(r => r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner).Select(rp => rp.UserId).ToHashSet();
+            var exclude = Context.Raffles.Where(r => (r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner) || (r.RaffleCounter != raffleCounter.Counter && r.Status == RaffleStatus.Winner)).Select(rp => rp.UserId).ToHashSet();
             var participantsRange = Context.Users.FirstOrDefault();
             var rangeRandom = Enumerable.Range(participantsRange.First, participantsRange.Last).Where(i => !exclude.Contains(i));
 
