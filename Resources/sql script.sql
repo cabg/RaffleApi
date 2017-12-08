@@ -1,12 +1,3 @@
---Clear all data on the following tables
-TRUNCATE TABLE Prizes;
-TRUNCATE TABLE RaffleCounter;
-TRUNCATE TABLE Raffles;
-TRUNCATE TABLE Users;
-
---Insert the value 1 on the table so it can always star on cicle 1 and counter 1 as well
-INSERT INTO RaffleCounter VALUES (1, 1);
-
 --Insert all the prizes on the table Prizes
 INSERT INTO Prizes VALUES 
 ('Pull & Bear 1', 1, 1),
