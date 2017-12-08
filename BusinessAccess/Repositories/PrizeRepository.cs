@@ -59,13 +59,13 @@ namespace BusinessAccess.Repositories
             }
         }
 
-        public async Task<Prize> SavePrize(String Name, int Stock)
+        public async Task<Prize> SavePrize(String Name, int Stock, int Status)
         {
                 var newUser = new Prize
                 {
                     Name = Name,
                     Stock = Stock,
-                    Status = PrizeStatus.Active
+                    Status = (Status == 1) ? PrizeStatus.Active : PrizeStatus.Inactive
                 };
                 if (Name != null && Stock >= 0)
                 {
@@ -78,20 +78,20 @@ namespace BusinessAccess.Repositories
         public async Task<Prize> UpdatePrize(int id, String Name, int Stock, int Status)
         {
 
-            var preziData = Context.Prizes.FirstOrDefault(p => p.Id == id);
+            var prizeData = Context.Prizes.FirstOrDefault(p => p.Id == id);
             if (id>=0 && Name != null &&  Stock >=0 && (Status==0 || Status == 1) ) { 
            // var preziData = await Context.Prizes.FirstOrDefaultAsync(p => p.Id == id);
            
-            if (preziData != null)
+            if (prizeData != null)
             {
-                preziData.Name = Name;
-                preziData.Stock = Stock;
-                preziData.Status = (Status == 1)? PrizeStatus.Active:PrizeStatus.Inactive;
+                prizeData.Name = Name;
+                prizeData.Stock = Stock;
+                prizeData.Status = (Status == 1)? PrizeStatus.Active:PrizeStatus.Inactive;
 
-                await AddOrUpdateAsync(preziData);
+                await AddOrUpdateAsync(prizeData);
             }
             }
-            return preziData;
+            return prizeData;
         }
 
         public async Task<Prize> DeletePrize(int id)
@@ -119,7 +119,7 @@ namespace BusinessAccess.Repositories
         }
         public async Task<List<Prize>> GetAllPrizes()
         {
-            return await Context.Prizes.Where(p => p.Stock > 0).ToListAsync();
+            return await Context.Prizes.ToListAsync();
 
         }
 

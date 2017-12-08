@@ -33,9 +33,9 @@ namespace RaffleApi.Controllers
         }
 
         [HttpGet("save")]
-        public async Task<IActionResult> SavePrize(String Name, int Stock)
+        public async Task<IActionResult> SavePrize(String Name, int Stock, int Status)
         {
-            var userData = await Repository.SavePrize(Name, Stock);
+            var userData = await Repository.SavePrize(Name, Stock, Status);
 
             return Ok("ok");
         }

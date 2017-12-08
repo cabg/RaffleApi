@@ -29,7 +29,7 @@ namespace BusinessAccess.Interfaces
 
         Task SaveAsync();
 
-        Task<Prize> SavePrize(String Name, int Stock);
+        Task<Prize> SavePrize(String Name, int Stock, int Status);
 
 
     }
