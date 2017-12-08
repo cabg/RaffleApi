@@ -68,8 +68,19 @@ namespace RaffleApi.Controllers
 
            
         }
+        // GET api/prizes
+        [HttpGet("GetAllPrizes")]
+        public async Task<IActionResult> GetAllPrizes()
+        {
+            var prizes = await Repository.GetAllPrizes();
 
-        
+            if (!prizes.Any()) NotFound();
+
+            return Ok(prizes);
+        }
+
+
+
 
     }
 }

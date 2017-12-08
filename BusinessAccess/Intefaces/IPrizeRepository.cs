@@ -17,6 +17,8 @@ namespace BusinessAccess.Interfaces
 
         Task<List<Prize>> GetAllAsync();
 
+        Task<List<Prize>> GetAllPrizes();
+
         Task<Prize> GetPrize(int id);
 
         Task<Prize> AddOrUpdateAsync(Prize prize);

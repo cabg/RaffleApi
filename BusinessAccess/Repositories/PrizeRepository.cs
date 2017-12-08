@@ -116,8 +116,12 @@ namespace BusinessAccess.Repositories
         public Task SaveAsync()
         {
             return Context.SaveChangesAsync();
-        }   
-        
+        }
+        public async Task<List<Prize>> GetAllPrizes()
+        {
+            return await Context.Prizes.Where(p => p.Stock > 0).ToListAsync();
+
+        }
 
     }
 }
