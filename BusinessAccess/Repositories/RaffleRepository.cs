@@ -34,12 +34,30 @@ namespace BusinessAccess.Repositories
 
             var raffleCounter = Context.RaffleCounter.FirstOrDefault(c => c.Id == RaffleCounterId);
 
-            var exclude = Context.Raffles.Where(r => (r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner) || (r.RaffleCounter != raffleCounter.Counter && r.Status == RaffleStatus.Winner)).Select(rp => rp.UserId).ToHashSet();
-            var participantsRange = Context.Users.FirstOrDefault();
-            var rangeRandom = Enumerable.Range(participantsRange.First, participantsRange.Last).Where(i => !exclude.Contains(i));
+            var partMin = Context.Users.Min(u => u.First);
 
+            var partMax = Context.Users.Max(u => u.Last);
+
+            var participantRanges = Context.Users.OrderBy(u => u.First).ToList();
+
+            var exclude = Context.Raffles.Where(r => (r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner) || (r.RaffleCounter != raffleCounter.Counter && r.Status == RaffleStatus.Winner)).Select(rp => rp.UserId).ToHashSet();
+
+            for (int i = 0; i < participantRanges.Count; i++)
+            {
+                if ((i+1) < participantRanges.Count) {
+                    var rangeLast = participantRanges[i + 1].First - participantRanges[i].Last;
+                    if (rangeLast > 0)
+                    {
+                        var rangeExclude = Enumerable.Range(participantRanges[i].Last + 1, rangeLast - 1).ToHashSet();
+                        exclude = exclude.Union(rangeExclude).ToHashSet();
+                    }
+                }               
+            }
+
+            var rangeRandom = Enumerable.Range(partMin, partMax).Where(i => !exclude.Contains(i));
+            
             var rand = new System.Random();
-            int index = rand.Next(0, participantsRange.Last - exclude.Count);
+            int index = rand.Next(0, partMax - exclude.Count);
 
             var raffle = new Raffle
             {
