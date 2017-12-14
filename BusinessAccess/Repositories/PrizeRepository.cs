@@ -80,7 +80,6 @@ namespace BusinessAccess.Repositories
 
             var prizeData = Context.Prizes.FirstOrDefault(p => p.Id == id);
             if (id>=0 && Name != null &&  Stock >=0 && (Status==0 || Status == 1) ) { 
-           // var preziData = await Context.Prizes.FirstOrDefaultAsync(p => p.Id == id);
            
             if (prizeData != null)
             {
