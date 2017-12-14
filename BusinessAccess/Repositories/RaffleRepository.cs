@@ -3,7 +3,9 @@ using Context;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -147,5 +149,54 @@ namespace BusinessAccess.Repositories
         {
             return Context.SaveChangesAsync();
         }
+
+        
+        public async Task<Raffle> SendEmailWinAsync()
+        {
+            var raffle = new Raffle();
+
+            List<Raffle> list = await Context.Raffles.Include("Prize").Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
+            string HTML = GetMyTable(list, "Id","Cicle","Prize");
+            bool isMessageSent = false;
+            //Intialise Parameters  
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("smtp.sendgrid.net");
+            client.Port = 587;
+            client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("azure_cf21d5bee92f174016fc32b8815a177c@azure.com", "MemoryLeak00");
+            client.EnableSsl = true;
+            client.Credentials = credentials;
+            try
+            {
+                var mail = new System.Net.Mail.MailMessage("azure_cf21d5bee92f174016fc32b8815a177c@azure.com", "kevinsz2805@gmail.com");
+                mail.Subject = "Test";
+                mail.Body = "Test";
+                mail.IsBodyHtml = true;
+              
+                client.Send(mail);
+                isMessageSent = true;
+            }
+            catch (Exception ex)
+            {
+                isMessageSent = false;
+            }
+            return raffle;
+        }
+
+        public static string GetMyTable(IEnumerable list, params string[] columns)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in list)
+            {
+                //todo this should actually make an HTML table, not just get the properties requested
+                foreach (var column in columns)
+                    sb.Append(item.GetType().GetProperty(column).GetValue(item, null));
+            }
+            return sb.ToString();
+        }
+        //used like
+        //string HTML = GetMyTable(people, "FirstName", "LastName");
+
+
     }
 }

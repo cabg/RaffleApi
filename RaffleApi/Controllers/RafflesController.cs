@@ -45,5 +45,13 @@ namespace RaffleApi.Controllers
         {
             return Ok(await Repository.GetWinnersAsync());
         }
+
+        [HttpGet("SendMail")]
+        public async Task<IActionResult> SendEmailWin()
+        {
+            await Repository.SendEmailWinAsync();
+
+            return Ok();
+        }
     }
 }

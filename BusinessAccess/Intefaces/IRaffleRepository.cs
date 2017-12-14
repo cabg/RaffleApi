@@ -28,7 +28,6 @@ namespace BusinessAccess.Interfaces
         Task DeleteAsync(int id);
 
         Task SaveAsync();
-
-
+        Task<Raffle> SendEmailWinAsync();
     }
 }
