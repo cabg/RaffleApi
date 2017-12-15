@@ -10,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace BusinessAccess.Interfaces
 {
-    public interface IRaffleRepository
+    public interface IExcludeRepository
     {
         
         RaffleApiContext Context { get; set; }
 
-        Task<List<Raffle>> GetWinnersAsync();
+        Task<List<Exclude>> GetAllAsync();
 
-        Task<Raffle> GetRandom(int PrizeId);
+        Task<Exclude> FindByIdAsync(int id);
 
-        Task<Raffle> GivePrize(int RaffleId);
-
-        Task<Raffle> FindByIdAsync(int id);
-
-        Task<Raffle> AddOrUpdateAsync(Raffle user);
+        Task<Exclude> AddOrUpdateAsync(Exclude user);
 
         Task DeleteAsync(int id);
 
         Task SaveAsync();
 
-        Task<Raffle> SendEmailWinAsync();
     }
 }

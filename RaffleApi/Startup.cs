@@ -38,6 +38,7 @@ namespace RaffleApi
                 });
 
             // Implement Repositories
+            services.AddSingleton<IExcludeRepository, ExcludeRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IRaffleRepository, RaffleRepository>();
             services.AddSingleton<IPrizeRepository, PrizeRepository>();

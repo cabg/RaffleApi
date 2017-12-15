@@ -40,7 +40,14 @@ namespace BusinessAccess.Repositories
 
             var participantRanges = Context.Users.OrderBy(u => u.First).ToList();
 
-            var exclude = Context.Raffles.Where(r => (r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner) || (r.RaffleCounter != raffleCounter.Counter && r.Status == RaffleStatus.Winner)).Select(rp => rp.UserId).ToHashSet();
+            var excludeList = Context.Excludes.Select(e => e.Number).ToHashSet();
+
+            //Add winners to exclude list
+            excludeList = excludeList.Union(
+                Context.Raffles.Where(r => (r.RaffleCounter == raffleCounter.Counter && r.Status == RaffleStatus.NonWinner) 
+                || (r.RaffleCounter != raffleCounter.Counter && r.Status == RaffleStatus.Winner)).
+                Select(rp => rp.UserId).ToHashSet()
+                ).ToHashSet();
 
             for (int i = 0; i < participantRanges.Count; i++)
             {
@@ -49,15 +56,15 @@ namespace BusinessAccess.Repositories
                     if (rangeLast > 0)
                     {
                         var rangeExclude = Enumerable.Range(participantRanges[i].Last + 1, rangeLast - 1).ToHashSet();
-                        exclude = exclude.Union(rangeExclude).ToHashSet();
+                        excludeList = excludeList.Union(rangeExclude).ToHashSet();
                     }
                 }               
             }
 
-            var rangeRandom = Enumerable.Range(partMin, partMax).Where(i => !exclude.Contains(i));
+            var rangeRandom = Enumerable.Range(partMin, partMax).Where(i => !excludeList.Contains(i));
             
             var rand = new System.Random();
-            int index = rand.Next(0, partMax - exclude.Count);
+            int index = rand.Next(0, partMax - excludeList.Count);
 
             var raffle = new Raffle
             {
@@ -167,28 +174,35 @@ namespace BusinessAccess.Repositories
         {
             return Context.SaveChangesAsync();
         }
-
         
         public async Task<Raffle> SendEmailWinAsync()
         {
             var raffle = new Raffle();
 
-            List<Raffle> list = await Context.Raffles.Include("Prize").Where(r => r.Status == RaffleStatus.Winner).ToListAsync();
-            string HTML = GetMyTable(list, "Id","Cicle","Prize");
+            List<Raffle> list = await Context.Raffles.Include("Prize").Where(r => r.Status == RaffleStatus.Winner).ToListAsync();            
             bool isMessageSent = false;
             //Intialise Parameters  
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("smtp.sendgrid.net");
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("");
             client.Port = 587;
             client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("azure_cf21d5bee92f174016fc32b8815a177c@azure.com", "MemoryLeak00");
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("", "");
             client.EnableSsl = true;
             client.Credentials = credentials;
+
+            var BodyHtml = "<table style='border: 1px solid #000000'><thead><tr><th>Winner Number</th><th>Prize</th></tr></thead><tbody>";
+            foreach (var winner in list)
+            {
+                BodyHtml += "<tr><td>"+ winner.UserId + "</td><td>"+ winner.Prize.Name + "</td></tr>";
+            }
+
+            BodyHtml += "</tbody></table>";
+
             try
             {
-                var mail = new System.Net.Mail.MailMessage("azure_cf21d5bee92f174016fc32b8815a177c@azure.com", "kevinsz2805@gmail.com");
+                var mail = new System.Net.Mail.MailMessage("azure_cf21d5bee92f174016fc32b8815a177c@azure.com", "carls.burgos@gmail.com");
                 mail.Subject = "Test";
-                mail.Body = "Test";
+                mail.Body = BodyHtml;
                 mail.IsBodyHtml = true;
               
                 client.Send(mail);
@@ -200,21 +214,6 @@ namespace BusinessAccess.Repositories
             }
             return raffle;
         }
-
-        public static string GetMyTable(IEnumerable list, params string[] columns)
-        {
-            var sb = new StringBuilder();
-            foreach (var item in list)
-            {
-                //todo this should actually make an HTML table, not just get the properties requested
-                foreach (var column in columns)
-                    sb.Append(item.GetType().GetProperty(column).GetValue(item, null));
-            }
-            return sb.ToString();
-        }
-        //used like
-        //string HTML = GetMyTable(people, "FirstName", "LastName");
-
-
+        
     }
 }
