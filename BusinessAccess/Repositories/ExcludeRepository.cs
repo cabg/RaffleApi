@@ -34,7 +34,7 @@ namespace BusinessAccess.Repositories
         
         public async Task DeleteAsync(int id)
         {
-            var model = await Context.Excludes.FirstOrDefaultAsync(e => e.Id == id);
+            var model = Context.Excludes.FirstOrDefault(e => e.Id == id);
 
             Context.Entry(model).State = EntityState.Deleted;
 
